@@ -64,3 +64,7 @@ Docker Compose crea una red personalizada donde cada servicio es accesible por s
 **¿Qué aporta el healthcheck frente a un depends_on simple?**
 
 Un `depends_on` simple solo espera a que el contenedor de la base de datos *arranque*, no a que MySQL esté realmente listo para aceptar conexiones. El `healthcheck` verifica que el servicio responda de verdad, y `condition: service_healthy` hace que WordPress espere ese estado antes de iniciar, evitando errores de conexión al arrancar.
+
+## Arquitectura
+
+Dos contenedores conectados por la red `wp_network`: `wordpress` (aplicación) y `db` (MySQL). WordPress se conecta a la base de datos usando el nombre del servicio `db` como host, no una IP fija, gracias al DNS interno de Docker Compose. Los datos persisten en los volúmenes nombrados `wp_data` y `db_data`.
